@@ -14,6 +14,14 @@ get_texture_measure(image, mask=None, type=None, verbose=True)
 get_all_color_measures(image, mask=None)
 get_all_texture_measures(image, mask=None)
 
+- extract activations at a layer for a set of inputs
+  with/without update of model parameters (if labels provided)
+  without spatial pooling, with GAP, MaxPooling
+
+function
+
+get_activations(model, layer, data, labels=None, pooling=None, param_update=False, save_fold='')
+
 - compute linear regression
 - compute ridge regression
 - compute local linear regression
