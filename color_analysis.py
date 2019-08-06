@@ -105,7 +105,6 @@ def colorness(image, color_name, threshold=0, verbose=False):
         plt.figure()
         plt.imshow(cv2.cvtColor(res, cv2.COLOR_HSV2RGB))
     x,y,z = image.shape
-    print x, y , z
     if verbose:
         print np.sum(mask==255)/(float(x)*float(y))
     return float(np.sum(mask==255))/(float(x)*float(y))

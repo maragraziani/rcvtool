@@ -17,21 +17,21 @@ rsquared(labels, predictions)
 
 """
 
-def get_color_measure(image, mask=None, type=None, verbose=False):
+def get_color_measure(image, mask=None, mtype=None, verbose=False):
     if mask is not None:
         print "A mask was specified"
         print "This feature has not been implemented yet"
         return None
-    if type is None:
+    if mtype is None:
         print "No type was given"
         return None
-    if type=='colorfulness':
+    if mtype=='colorfulness':
         return colorfulness(image)
     else:
-        return colorness(image, type, threshold=0, verbose=verbose)
+        return colorness(image, mtype, threshold=0, verbose=verbose)
 
 def get_all_color_measures(image, mask=None, verbose=False):
-    all_types = ['colrfulness',
+    all_types = ['colorfulness',
                  'red',
                  'orange',
                  'yellow',
@@ -39,25 +39,25 @@ def get_all_color_measures(image, mask=None, verbose=False):
                  'cyano',
                  'blue',
                  'purple',
-                 'magenta', 'dissimilarity'
+                 'magenta', 
                  'black',
                  'white'
                 ]
     cms={}
-    for type in all_types:
-        if verbose:  print type
-        cms[type]=get_color_measure(image,mask,type=type)
+    for mtype in all_types:
+        if verbose:  print mtype
+        cms[mtype]=get_color_measure(image,mask=mask,mtype=mtype)
     return cms
 
-def get_texture_measure(image, mask=None, type=None, verbose=False):
+def get_texture_measure(image, mask=None, mtype=None, verbose=False):
     if mask is not None:
         print "A mask was specified"
         print "This feature has been implemented in iMIMIC paper"
         return None
-    if type is None:
+    if mtype is None:
         print "No type was given"
         return None
-    return haralick(image, type, verbose=verbose)
+    return haralick(image, mask=mask, mtype=mtype, verbose=verbose)
 
 def get_all_texture_measures(image, mask=None, verbose=False):
     all_types = ['dissimilarity',
@@ -68,7 +68,7 @@ def get_all_texture_measures(image, mask=None, verbose=False):
                  'energy'
                 ]
     cms={}
-    for type in all_types:
-        if verbose:  print type
-        cms[type]=get_texture_measure(image,mask,type=type)
+    for mtype in all_types:
+        if verbose:  print mtype
+        cms[mtype]=get_texture_measure(image,mask=mask,mtype=mtype)
     return cms
