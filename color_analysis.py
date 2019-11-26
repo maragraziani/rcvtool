@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 def colorfulness(img):
     """Colorfulness metric by .. & ..
@@ -19,7 +20,7 @@ def colorfulness(img):
     # derive the "colorfulness" metric and return it
     return stdRoot + (0.3 * meanRoot)
 
-def colorness(image, color_name, threshold=0, verbose=False):
+def colorness(image, color_name, threshold=0, verbose=True):
     """ Colorness as defined in submission to ICCV
         blue-ness = #blue pixels / # pixels
 
@@ -40,13 +41,13 @@ def colorness(image, color_name, threshold=0, verbose=False):
     if threshold == 0:
         hue_min, hue_max = quantize_hue_ranges(image, color_name)
         if verbose:
-            print 'hue min, hue max: ', hue_min, hue_max
+            print('hue min, hue max: ', hue_min, hue_max)
     else:
         h_point = color_picker(color_name)
         hue_min = round_hue(h_point[0][0][0]-threshold)
         hue_max = round_hue(h_point[0][0][0]+threshold)
         if verbose:
-            print 'hue min, hue max: ', hue_min, hue_max
+            print('hue min, hue max: ', hue_min, hue_max)
     if (hue_min == hue_max == 0) or (hue_min == 0 and hue_max == 255):
         #it is either black or white
         if color_name=='black':
@@ -64,7 +65,7 @@ def colorness(image, color_name, threshold=0, verbose=False):
                               50,
                               255])
         if verbose:
-            print 'low_c', low_c, 'upp_c', upp_c
+            print('low_c', low_c, 'upp_c', upp_c)
         mask = cv2.inRange(image, low_c, upp_c)
     elif hue_min>hue_max:
         low_c = np.array([0,
@@ -91,10 +92,10 @@ def colorness(image, color_name, threshold=0, verbose=False):
                           255,
                           255])
         if verbose:
-            print 'low_c', low_c, 'upp_c', upp_c
+            print('low_c', low_c, 'upp_c', upp_c)
         mask = cv2.inRange(image, low_c, upp_c)
     if verbose:
-        print mask
+        print(mask)
     res = cv2.bitwise_and(image, image, mask = mask)
     if verbose:
         plt.figure()
@@ -106,7 +107,7 @@ def colorness(image, color_name, threshold=0, verbose=False):
         plt.imshow(cv2.cvtColor(res, cv2.COLOR_HSV2RGB))
     x,y,z = image.shape
     if verbose:
-        print np.sum(mask==255)/(float(x)*float(y))
+        print(np.sum(mask==255)/(float(x)*float(y)))
     return float(np.sum(mask==255))/(float(x)*float(y))
 """
 Functions called by colorness module
@@ -115,9 +116,9 @@ def hsv_histograms(image):
     hist_hue = cv2.calcHist([image], [0], None, [180], [0, 180])
     hist_sat = cv2.calcHist([image], [1], None, [256], [0, 256])
     hist_val = cv2.calcHist([image], [2], None, [256], [0, 256])
-    print np.mean(image[:,:,0])
-    print np.min(image[:,:,0])
-    print np.max(image[:,:,0])
+    #print np.mean(image[:,:,0])
+    #print np.min(image[:,:,0])
+    #print np.max(image[:,:,0])
     return hist_hue, hist_sat, hist_val
 
 def color_picker(color_name):
