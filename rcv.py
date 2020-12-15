@@ -4,7 +4,7 @@ from color_analysis import *
 from texture_analysis import *
 import keras
 import keras.backend as K
-import statsmodels.api as sm
+#import statsmodels.api as sm
 
 """
 Functions:
