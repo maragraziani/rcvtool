@@ -60,9 +60,9 @@ def get_all_color_measures(image, mask=None, verbose=False):
 
 def get_texture_measure(image, mask=None, mtype=None, verbose=False):
     if mask is not None:
-        print("A mask was specified")
-        print("This feature has been implemented in iMIMIC paper")
-        return None
+        #print("A mask was specified")
+        #print("This feature has been implemented in iMIMIC paper")
+        return get_masked_texture(image, mask,method=mtype)
     if mtype is None:
         print("No type was given")
         return None
@@ -77,10 +77,36 @@ def get_all_texture_measures(image, mask=None, verbose=False):
                  'energy'
                 ]
     cms={}
+    if mask is not None:
+        return get_all_masked_textures(image, mask)
     for mtype in all_types:
         if verbose:  print(mtype)
         cms[mtype]=get_texture_measure(image,mask=mask,mtype=mtype)
     return cms
+
+import skimage.feature
+
+def get_masked_texture(image, mask, method='contrast'):
+    if len(image.shape)<3:
+        gray_img=image
+    else:
+        gray_img=cv2.cvtColor(np.uint8(image), cv2.COLOR_BGR2GRAY)
+    copy = mask.copy()
+    if np.max(copy)>1.:
+        copy/=255.0
+    copy[mask==0] = -1
+    isolated_grayscale_mask = gray_img*mask/255.0
+    isolated_grayscale_mask[copy==-1]=257
+    p_image = np.asarray(isolated_grayscale_mask, dtype=np.int)
+    glcm = skimage.feature.greycomatrix(p_image, [5], [0], 258, symmetric=True, normed=True)
+    glcm=glcm[:256,:256]
+    return skimage.feature.greycoprops(glcm, method)[0,0]
+def get_all_masked_textures(image, mask):
+    texture_feats={}
+    methods=['contrast', 'correlation', 'ASM', 'energy', 'dissimilarity', 'homogeneity']
+    for m in methods:
+        texture_feats[m]=get_masked_texture(image, mask, method=m)
+    return texture_feats
 
 def binarize_image(image):
     min_intensity = np.min(image)
