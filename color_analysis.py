@@ -20,7 +20,7 @@ def colorfulness(img):
     # derive the "colorfulness" metric and return it
     return stdRoot + (0.3 * meanRoot)
 
-def colorness(image, color_name, threshold=0, verbose=True):
+def colorness(image, color_name, threshold=0, verbose=False):
     """ Colorness as defined in submission to ICCV
         blue-ness = #blue pixels / # pixels
 

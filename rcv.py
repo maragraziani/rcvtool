@@ -28,11 +28,12 @@ compute_rsquared(labels, predictions)
 
 def get_color_measure(image, mask=None, mtype=None, verbose=False):
     if mask is not None:
-        print("A mask was specified")
-        print("This feature has not been implemented yet")
+        print("A mask was specified.")
+        print("This feature has not been implemented yet.")
         return None
     if mtype is None:
-        print("No type was given")
+        if verbose:
+            print("No type was given")
         return None
     if mtype=='colorfulness':
         return colorfulness(image)
@@ -64,7 +65,8 @@ def get_texture_measure(image, mask=None, mtype=None, verbose=False):
         #print("This feature has been implemented in iMIMIC paper")
         return get_masked_texture(image, mask,method=mtype)
     if mtype is None:
-        print("No type was given")
+        if verbose:
+            print("No type was given")
         return None
     return haralick(image, mask=mask, mtype=mtype, verbose=verbose)
 
@@ -136,7 +138,7 @@ def get_all_region_measures(image, mask=None, verbose=False):
         cms[mtype]=get_region_measure(image, mask=mask, mtype=mtype)
     return cms
 
-def get_batch_activations(model, layer, batch, labels=None):
+def get_batch_activations(model, layer, batch, pooling=None, labels=None):
     """
     gets a keras model as input, a layer name and a batch of data
     and outputs the network activations
@@ -144,10 +146,12 @@ def get_batch_activations(model, layer, batch, labels=None):
     get_layer_output = K.function([model.layers[0].input],
                                   [model.get_layer(layer).output])
     feats = get_layer_output([batch])
+    if pooling=='AVG':
+        return np.mean(feats[0], axis=2)
     return feats[0]
 
 def get_activations(model, layer, data, labels=None, pooling=None, param_update=False, save_fold=''):
-    print("todo")
+    print("Not supported yet. Use get_batch_activations.")
     return None
 
 """Support function for get_rcv"""
@@ -269,11 +273,8 @@ def get_rcv(acts, measures, type='global linear', max_clusters=1, evaluation=Tru
                 avg_r2+=r2
             avg_r2/=n_clusters
             avg_mse/=n_clusters
-            print("Cumulative MSE: {}, Avg R2: {}".format(avg_mse, avg_r2))
-
-            #import pdb; pdb.set_trace()
-
-               #print(rcv_result.summary())
+            if verbose:
+                print("Cumulative MSE: {}, Avg R2: {}".format(avg_mse, avg_r2))
             return train_acts, clustering_labels, avg_mse, avg_r2
     elif type =='local UMAP':
         if verbose:
