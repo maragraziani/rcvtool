@@ -345,7 +345,7 @@ def get_batch_activations(model, layer, batch, pooling=None, labels=None):
                                   [model.get_layer(layer).output])
     feats = get_layer_output([batch])
     if pooling=='AVG':
-        return np.mean(feats[0], axis=2)
+        return np.mean(feats[0], axis=(1,2))
     return feats[0]
 
 def get_activations(model, layer, data, labels=None, pooling=None, param_update=False, save_fold=''):
