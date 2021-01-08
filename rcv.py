@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import keras
 import keras.backend as K
-#import statsmodels.api as sm
+import statsmodels.api as sm
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
