@@ -295,10 +295,10 @@ def get_masked_texture(image, mask, method='contrast'):
     if np.max(copy)>1.:
         copy/=255.0
     copy[mask==0] = -1
-    isolated_grayscale_mask = gray_img*mask/255.0
-    isolated_grayscale_mask[copy==-1]=257
+    isolated_grayscale_mask = gray_img*mask
+    isolated_grayscale_mask[copy==-1]=256
     p_image = np.asarray(isolated_grayscale_mask, dtype=np.int)
-    glcm = skimage.feature.greycomatrix(p_image, [5], [0], 258, symmetric=True, normed=True)
+    glcm = skimage.feature.greycomatrix(p_image, [5], [0], 257, symmetric=True, normed=True)
     glcm=glcm[:256,:256]
     return skimage.feature.greycoprops(glcm, method)[0,0]
 def get_all_masked_textures(image, mask):
