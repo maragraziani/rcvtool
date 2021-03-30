@@ -426,6 +426,7 @@ def get_rcv(acts, measures, type='global linear', max_clusters=1, evaluation=Tru
             #    print("MSE: ", mse)
         print("TEST mse: {}, r2: {}".format(mse_test, r2_test))
             #print(rcv_result.summary())
+            return rcv_result
     elif type=='local linear':
         if verbose:
             print("Local linear regression under Euclidean assumption")
@@ -528,4 +529,4 @@ def get_rcv(acts, measures, type='global linear', max_clusters=1, evaluation=Tru
     elif type=='global manifold':
         if verbose:
             print("Global linear regression on unknown manifold")
-    return
+    return rcv_result
