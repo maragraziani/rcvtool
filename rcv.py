@@ -425,8 +425,8 @@ def get_rcv(acts, measures, type='global linear', max_clusters=1, evaluation=Tru
             #if evaluation:
             #    print("MSE: ", mse)
         print("TEST mse: {}, r2: {}".format(mse_test, r2_test))
-            #print(rcv_result.summary())
-            return rcv_result
+        #print(rcv_result.summary())
+        return rcv_result
     elif type=='local linear':
         if verbose:
             print("Local linear regression under Euclidean assumption")
